@@ -1,0 +1,38 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: auth-depl
+spec:
+  replicas: 1
+  # Selector: tells the deployment how to find the all pods that it needs to create.
+  selector:
+    matchLabels:
+      app: auth
+  # template: describes how to create the pods.
+  template:
+    metadata:
+      labels:
+        app: auth
+    # spec: tells the pod how to behave
+    spec:
+      # containers that are going to be runnig inside this pod
+      containers:
+        - name: auth
+          image: us.gcr.io/ticketapp-dev-499418/auth
+          imagePullPolicy: Always
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: auth-srv
+spec:
+  # tells the service how to find the set of pods that it needs to route traffic to. Find all pods with the label app=auth
+  selector:
+    app: auth
+  type: ClusterIP
+  ports:
+    - name: auth
+      protocol: TCP
+      port: 3000
+      targetPort: 3000
