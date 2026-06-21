@@ -1,0 +1,26 @@
+import { scrypt, randomBytes } from "crypto";
+import { promisify } from "util";
+
+/** Converting a callback based (scrypt) function to a promise-based function */
+const scryptAsync = promisify(scrypt);
+
+export class Password {
+  static async toHash(password: string) {
+    const salt = randomBytes(8).toString("hex");
+
+    const buffer = (await scryptAsync(password, salt, 64)) as Buffer;
+
+    return `${buffer.toString("hex")}.${salt}`;
+  }
+
+  static async compare(storedPassword: string, enteredPassword: string) {
+    const [hashedPassword, salt] = storedPassword.split(".") as [
+      string,
+      string,
+    ];
+
+    const buffer = (await scryptAsync(enteredPassword, salt, 64)) as Buffer;
+
+    return buffer.toString("hex") === hashedPassword;
+  }
+}
