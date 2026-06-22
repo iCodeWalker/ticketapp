@@ -3,7 +3,9 @@ import express from "express";
 const router = express.Router();
 
 router.post("/api/users/signout", (req, res) => {
-  res.send("Hellooo");
+  /** we will send a header that will tell the user browser to dump all the information inside the cookie  */
+  req.session = null;
+  res.send({});
 });
 
 export { router as signOutRouter };
