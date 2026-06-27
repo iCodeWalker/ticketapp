@@ -17,7 +17,8 @@ app.use(json());
 app.use(
   cookieSession({
     signed: false, // Will not encrypt the cookie
-    secure: true, // cookie will only be used if the user is usign https connection
+    secure: process.env.NODE_ENV !== "test", // cookie will only be used if the user is usign https connection
+    // When jest run test it sets the process.env.NODE_ENV to "test"
   }),
 );
 
