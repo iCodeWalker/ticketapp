@@ -4,7 +4,7 @@ const router = express.Router();
 
 router.post("/api/users/signout", (req, res) => {
   /** we will send a header that will tell the user browser to dump all the information inside the cookie  */
-  req.session = null;
+  req.session = { jwt: null };
   res.send({});
 });
 
