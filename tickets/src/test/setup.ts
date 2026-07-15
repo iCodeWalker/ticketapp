@@ -3,11 +3,13 @@ import mongoose from "mongoose";
 import request from "supertest";
 
 import { app } from "../app";
+import jwt from "jsonwebtoken";
 
-/** To tell typescript that a global property named signUp is present */
+/** To tell typescript that a global property named getAuthCookie is present */
 
 declare global {
-  var getAuthCookie: () => Promise<string[]>;
+  //   var getAuthCookie: () => Promise<string[]>;
+  var getAuthCookie: () => string[];
 }
 
 /** This file contains some hooks that facilitates writing our test much easier */
@@ -45,25 +47,47 @@ afterAll(async () => {
 });
 
 /** Fucntion for making auth requests : Start :*/
-global.getAuthCookie = async () => {
-  const email = "test@test.com";
-  const password = "password";
+// global.getAuthCookie = async () => {
+global.getAuthCookie = () => {
+  //   const email = "test@test.com";
+  //   const password = "password";
 
-  const response = await request(app)
-    .post("/api/users/signup")
-    .send({
-      email,
-      password,
-    })
-    .expect(201);
+  //   const response = await request(app)
+  //     .post("/api/users/signup")
+  //     .send({
+  //       email,
+  //       password,
+  //     })
+  //     .expect(201);
 
-  const cookie = response.get("Set-Cookie");
+  //   const cookie = response.get("Set-Cookie");
 
-  if (!cookie) {
-    throw new Error("Failed to get cookie from response");
-  }
+  //   if (!cookie) {
+  //     throw new Error("Failed to get cookie from response");
+  //   }
 
-  return cookie;
+  //   return cookie;
+
+  // Build a json web token payload. (id and email)
+  let paylod = {
+    id: "kadwebcc",
+    email: "test@test.com",
+  };
+
+  // Create the JWT
+  const token = jwt.sign(paylod, process.env.JWT_KEY!);
+
+  // Build session object
+  const session = { jwt: token };
+
+  // Turn that session into JSON
+  const sessionJSON = JSON.stringify(session);
+
+  // Take JSON and encode it as base64
+  const base64 = Buffer.from(sessionJSON).toString("base64");
+
+  // return a string thats the cookie with the encoded data
+  return [`session=${base64}`];
 };
 
 /** Fucntion for making auth requests : End :*/
