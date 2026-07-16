@@ -69,8 +69,9 @@ global.getAuthCookie = () => {
   //   return cookie;
 
   // Build a json web token payload. (id and email)
+
   let paylod = {
-    id: "kadwebcc",
+    id: new mongoose.Types.ObjectId().toHexString(),
     email: "test@test.com",
   };
 
