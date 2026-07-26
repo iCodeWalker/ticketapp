@@ -11,6 +11,7 @@ import mongoose from "mongoose";
 // import { errorHandler } from "./middlewares/error-handler";
 // import { NotFoundError } from "./errors/not-found-error";
 import { app } from "./app";
+import { natsWrapper } from "./nats-wrapper";
 
 // const app = express();
 // app.set("trust proxy", true); // trust ingress-nginx proxy
@@ -43,6 +44,17 @@ const startApp = async () => {
   }
   /** First we try to connect to database and when we have successfully connected */
   try {
+    await natsWrapper.connect("ticketapp", "asda", "http://nats-srv:4222");
+
+    /** Gracefully closing the connection */
+    natsWrapper.client.on("close", () => {
+      console.log("NATS connection closed");
+      process.exit();
+    });
+    process.on("SIGINT", () => natsWrapper.client.close());
+    process.on("SIGTERM", () => natsWrapper.client.close());
+    /** Gracefully closing the connection */
+
     await mongoose.connect(process.env.MONGO_URI);
     console.log("Connected to Mongo server");
   } catch (err) {
