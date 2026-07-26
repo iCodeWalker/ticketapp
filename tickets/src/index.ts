@@ -42,9 +42,22 @@ const startApp = async () => {
   if (!process.env.MONGO_URI) {
     throw new Error("MONGO_URI Not defined");
   }
+  if (!process.env.NATS_CLIENT_ID) {
+    throw new Error("NATS_CLIENT_ID Not defined");
+  }
+  if (!process.env.NATS_URL) {
+    throw new Error("NATS_URL Not defined");
+  }
+  if (!process.env.NATS_CLUSTER_ID) {
+    throw new Error("NATS_CLUSTER_ID Not defined");
+  }
   /** First we try to connect to database and when we have successfully connected */
   try {
-    await natsWrapper.connect("ticketapp", "asda", "http://nats-srv:4222");
+    await natsWrapper.connect(
+      process.env.NATS_CLUSTER_ID,
+      process.env.NATS_CLIENT_ID,
+      process.env.NATS_URL,
+    );
 
     /** Gracefully closing the connection */
     natsWrapper.client.on("close", () => {
