@@ -10,6 +10,7 @@ export const toJSON = {
 };
 
 interface TicketAttrs {
+  id: string;
   title: string;
   price: number;
 }
@@ -43,7 +44,11 @@ const ticketSchema = new mongoose.Schema(
 
 /** statics add a new method directly on the model */
 ticketSchema.statics.build = (attrs: TicketAttrs) => {
-  return new Ticket(attrs);
+  return new Ticket({
+    _id: attrs.id,
+    title: attrs.title,
+    price: attrs.price,
+  });
 };
 
 /** methods add a new method to the document */
