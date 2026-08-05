@@ -26,6 +26,7 @@ interface OrderDocument extends mongoose.Document {
   status: OrderStatus;
   expiresAt: Date;
   ticket: TicketDocument;
+  version: number;
 }
 
 /** Interface that describes all the properties that a Model (Document) has */
