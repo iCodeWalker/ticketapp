@@ -32,7 +32,7 @@ const ticketSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
-    orderd: {
+    orderId: {
       type: String,
     },
   },

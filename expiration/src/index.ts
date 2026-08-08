@@ -9,6 +9,7 @@
 // import { signOutRouter } from "./routes/signout";
 // import { errorHandler } from "./middlewares/error-handler";
 // import { NotFoundError } from "./errors/not-found-error";
+import { OrderCreatedListener } from "./events/listeners/order-created-listener";
 import { natsWrapper } from "./nats-wrapper";
 
 // const app = express();
@@ -59,6 +60,9 @@ const startApp = async () => {
     process.on("SIGINT", () => natsWrapper.client.close());
     process.on("SIGTERM", () => natsWrapper.client.close());
     /** Gracefully closing the connection */
+
+    /** Start up the Listner */
+    new OrderCreatedListener(natsWrapper.client).listen();
   } catch (err) {
     console.error(err);
   }
