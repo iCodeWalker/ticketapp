@@ -15,6 +15,9 @@ export class TicketUpdatedListener extends Listener<TicketUpdatedEvent> {
     //   _id: data.id,
     //   version: data.version - 1,
     // });
+    console.log("TICKET UPDATED DATA:", data);
+    console.log("VERSION:", data.version);
+    console.log("VERSION TYPE:", typeof data.version);
     const ticket = await Ticket.findByEvent(data);
 
     if (!ticket) {

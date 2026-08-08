@@ -15,6 +15,7 @@ import { natsWrapper } from "./nats-wrapper";
 
 import { TicketCreatedListener } from "./events/listeners/ticket-created-listener";
 import { TicketUpdatedListener } from "./events/listeners/ticket-updated-listener";
+import { ExpirationCompleteListener } from "./events/listeners/expiration-complete-listener";
 
 // const app = express();
 // app.set("trust proxy", true); // trust ingress-nginx proxy
@@ -74,6 +75,7 @@ const startApp = async () => {
     /** Listening for upcoming events */
     new TicketCreatedListener(natsWrapper.client).listen();
     new TicketUpdatedListener(natsWrapper.client).listen();
+    new ExpirationCompleteListener(natsWrapper.client).listen();
 
     await mongoose.connect(process.env.MONGO_URI);
     console.log("Connected to Mongo server");

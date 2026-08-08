@@ -5,7 +5,7 @@ import mongoose from "mongoose";
 import { TicketUpdatedEvent } from "@vkticketscommon/common";
 import { Message } from "node-nats-streaming";
 
-const setUp = () => {
+const setUp = async () => {
   /** Create an instance of the listener */
   const listener = new TicketUpdatedListener(natsWrapper.client);
   /**Create and save a ticket */
@@ -14,7 +14,7 @@ const setUp = () => {
     title: "Test Ticket",
     price: 20,
   });
-  ticket.save();
+  await ticket.save();
   /** Create a fake data event */
   const data: TicketUpdatedEvent["data"] = {
     id: ticket._id.toString(),
@@ -32,15 +32,15 @@ const setUp = () => {
   return { listener, ticket, data, msg };
 };
 
-it("finds, updatea and save a ticket", async () => {
+it("finds, update and save a ticket", async () => {
   const { msg, data, ticket, listener } = await setUp();
 
   await listener.onMessage(data, msg);
 
   const updatedTicket = await Ticket.findById(ticket._id);
-  expect(updatedTicket!.title).toEqual(ticket.title);
-  expect(updatedTicket!.price).toEqual(ticket.price);
-  expect(updatedTicket!.version).toEqual(ticket.version);
+  expect(updatedTicket!.title).not.toEqual(ticket.title);
+  expect(updatedTicket!.price).not.toEqual(ticket.price);
+  expect(updatedTicket!.version).not.toEqual(ticket.version);
 });
 
 it("acks the message", async () => {
