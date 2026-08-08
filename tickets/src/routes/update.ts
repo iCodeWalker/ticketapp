@@ -5,6 +5,7 @@ import {
   validateRequest,
   NotFoundError,
   NotAuthorizedError,
+  BadRequestError,
 } from "@vkticketscommon/common";
 import { Ticket } from "../models/ticket";
 import { TicketUpdatedPublisher } from "../events/publishers/ticket-updated-publisher";
@@ -25,6 +26,11 @@ router.put(
 
     if (!ticket) {
       throw new NotFoundError();
+    }
+
+    /** Rejecting a ticket update if booked */
+    if (ticket.orderId) {
+      throw new BadRequestError("Cannot edit a booked ticket");
     }
 
     if (ticket.userId !== req.currentUser!.id) {

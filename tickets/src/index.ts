@@ -12,6 +12,8 @@ import mongoose from "mongoose";
 // import { NotFoundError } from "./errors/not-found-error";
 import { app } from "./app";
 import { natsWrapper } from "./nats-wrapper";
+import { OrderCancelledListener } from "./events/listeners/order-cancelled-listener";
+import { OrderCreatedListener } from "./events/listeners/order-created-listener";
 
 // const app = express();
 // app.set("trust proxy", true); // trust ingress-nginx proxy
@@ -67,6 +69,10 @@ const startApp = async () => {
     process.on("SIGINT", () => natsWrapper.client.close());
     process.on("SIGTERM", () => natsWrapper.client.close());
     /** Gracefully closing the connection */
+
+    /** Listening for upcoming events */
+    new OrderCreatedListener(natsWrapper.client).listen();
+    new OrderCancelledListener(natsWrapper.client).listen();
 
     await mongoose.connect(process.env.MONGO_URI);
     console.log("Connected to Mongo server");
