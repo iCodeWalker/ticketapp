@@ -16,6 +16,16 @@ declare global {
 
 jest.mock("../nats-wrapper");
 
+/**
+ * For testing using real stripe api
+ *
+ * Declaring STRIPE_KEY here
+ *
+ * process.env.STRIPE_KEY = "key_value"
+ *
+ *
+ */
+
 let mongo: any;
 /** Function runs before all our tests start's executing */
 beforeAll(async () => {
