@@ -7,6 +7,7 @@ import {
   errorHandler,
   currentUser,
 } from "@vkticketscommon/common";
+import { createChargeRouter } from "./routes/new";
 
 const app = express();
 app.set("trust proxy", true); // trust ingress-nginx proxy
@@ -20,6 +21,8 @@ app.use(
 );
 
 app.use(currentUser);
+
+app.use(createChargeRouter);
 
 /** handling not defined routes */
 app.all("*", async () => {

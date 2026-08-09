@@ -9,7 +9,7 @@ import jwt from "jsonwebtoken";
 
 declare global {
   //   var getAuthCookie: () => Promise<string[]>;
-  var getAuthCookie: () => string[];
+  var getAuthCookie: (id?: string) => string[];
 }
 
 /** This file contains some hooks that facilitates writing our test much easier */
@@ -51,7 +51,7 @@ afterAll(async () => {
 
 /** Fucntion for making auth requests : Start :*/
 // global.getAuthCookie = async () => {
-global.getAuthCookie = () => {
+global.getAuthCookie = (id?: string) => {
   //   const email = "test@test.com";
   //   const password = "password";
 
@@ -74,7 +74,7 @@ global.getAuthCookie = () => {
   // Build a json web token payload. (id and email)
 
   let paylod = {
-    id: new mongoose.Types.ObjectId().toHexString(),
+    id: id || new mongoose.Types.ObjectId().toHexString(),
     email: "test@test.com",
   };
 
