@@ -4,6 +4,7 @@ import mongoose from "mongoose";
 import { Order } from "../../models/order";
 import { OrderStatus } from "@vkticketscommon/common";
 import { stripe } from "../../stripe";
+import { Payment } from "../../models/payment";
 
 jest.mock("../../stripe");
 
@@ -107,4 +108,11 @@ it("returns a 201 with valid inputs", async () => {
    * expect(stripePaymentIntent).toBeDefined();
    * expect(stripePaymentIntent!.currency).toEqual("inr")
    */
+
+  const payment = await Payment.findOne({
+    orderId: order._id.toString(),
+    stripeId: paymentIntentOptions!.id,
+  });
+
+  expect(payment).not.toBeNull();
 });

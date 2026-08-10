@@ -10,6 +10,9 @@ import {
 } from "@vkticketscommon/common";
 import { Order } from "../models/order";
 import { stripe } from "../stripe";
+import { Payment } from "../models/payment";
+import { PaymentCreatedPublisher } from "../events/publishers/payment-created-publisher";
+import { natsWrapper } from "../nats-wrapper";
 
 const router = express.Router();
 
@@ -55,6 +58,21 @@ router.post(
       },
 
       description: "Payment for ticket app",
+    });
+
+    /** Creating a payment doc */
+    const payment = Payment.build({
+      orderId: orderId,
+      stripeId: paymentIntent.id,
+    });
+
+    await payment.save();
+
+    /** Publishing a payment created event */
+    await new PaymentCreatedPublisher(natsWrapper.client).publish({
+      id: payment._id.toString(),
+      orderId: payment.orderId,
+      stripeId: payment.stripeId,
     });
 
     res.status(201).send({
