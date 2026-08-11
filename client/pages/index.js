@@ -12,7 +12,7 @@ const LandingPage = ({ currentUser }) => {
 
 /** Next js is going to call this function while it is attempting to render our applcation on the server */
 
-LandingPage.getInitialProps = async (context) => {
+LandingPage.getInitialProps = async (context, client, currentUser) => {
   /** Any data that we return from here is going to be provided to our component as a prop */
 
   /** To find if we are on a server or a browser */
@@ -35,8 +35,10 @@ LandingPage.getInitialProps = async (context) => {
   //     return response.data;
   //   }
 
-  const { data } = await buildClient(context).get("/api/users/currentuser");
-  return data;
+  // const { data } = await buildClient(context).get("/api/users/currentuser");
+  // return data;
+
+  return {};
 };
 
 export default LandingPage;
