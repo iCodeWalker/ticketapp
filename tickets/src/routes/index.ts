@@ -6,7 +6,10 @@ import { Ticket } from "../models/ticket";
 const router = express.Router();
 
 router.get("/api/tickets", async (req: Request, res: Response) => {
-  const tickets = await Ticket.find({});
+  /** To only send back the available tickets */
+  const tickets = await Ticket.find({
+    orderId: { $exists: false },
+  });
 
   res.send(tickets);
 });

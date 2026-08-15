@@ -18,7 +18,7 @@ spec:
       # containers that are going to be runnig inside this pod
       containers:
         - name: auth
-          image: us.gcr.io/ticketapp-dev-499418/auth
+          image: kadweyvaibhav/auth
           env:
             - name: MONGO_URI
               value: "mongodb://auth-mongo-srv:27017/auth"

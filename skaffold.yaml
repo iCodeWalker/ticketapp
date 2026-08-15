@@ -4,12 +4,12 @@ manifests:
   rawYaml:
     - ./infra/k8s/*
 build:
-  # local:
-  #   push: false
-  googleCloudBuild:
-    projectId: ticketapp-dev-499418
+  local:
+    push: false
+  # googleCloudBuild:
+  #   projectId: ticketapp-dev-499418
   artifacts:
-    - image: us.gcr.io/ticketapp-dev-499418/auth
+    - image: kadweyvaibhav/auth
       context: auth
       docker:
         dockerfile: Dockerfile
@@ -17,7 +17,7 @@ build:
         manual:
           - src: "src/**/*.ts"
             dest: .
-    - image: us.gcr.io/ticketapp-dev-499418/client
+    - image: kadweyvaibhav/client
       context: client
       docker:
         dockerfile: Dockerfile
@@ -25,7 +25,7 @@ build:
         manual:
           - src: "**/*.js"
             dest: .
-    - image: us.gcr.io/ticketapp-dev-499418/tickets
+    - image: kadweyvaibhav/tickets
       context: tickets
       docker:
         dockerfile: Dockerfile
@@ -33,7 +33,7 @@ build:
         manual:
           - src: "src/**/*.ts"
             dest: .
-    - image: us.gcr.io/ticketapp-dev-499418/orders
+    - image: kadweyvaibhav/orders
       context: orders
       docker:
         dockerfile: Dockerfile
@@ -41,7 +41,7 @@ build:
         manual:
           - src: "src/**/*.ts"
             dest: .
-    - image: us.gcr.io/ticketapp-dev-499418/expiration
+    - image: kadweyvaibhav/expiration
       context: expiration
       docker:
         dockerfile: Dockerfile
@@ -49,7 +49,7 @@ build:
         manual:
           - src: "src/**/*.ts"
             dest: .
-    - image: us.gcr.io/ticketapp-dev-499418/payments
+    - image: kadweyvaibhav/payments
       context: payments
       docker:
         dockerfile: Dockerfile

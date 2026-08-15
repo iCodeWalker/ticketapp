@@ -18,7 +18,7 @@ spec:
       # containers that are going to be runnig inside this pod
       containers:
         - name: client
-          image: us.gcr.io/ticketapp-dev-499418/client
+          image: kadweyvaibhav/client
           imagePullPolicy: Always
 
 ---
