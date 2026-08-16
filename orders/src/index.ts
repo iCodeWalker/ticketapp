@@ -41,6 +41,7 @@ import { PaymentCreatedListener } from "./events/listeners/payment-created-liste
 // app.use(errorHandler);
 
 const startApp = async () => {
+  console.log("Start app...");
   if (!process.env.JWT_KEY) {
     throw new Error("JWT Not defined");
   }
