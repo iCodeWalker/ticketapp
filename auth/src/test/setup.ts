@@ -12,7 +12,7 @@ declare global {
 
 /** This file contains some hooks that facilitates writing our test much easier */
 
-let mongo: any;
+let mongo: MongoMemoryServer;
 /** Function runs before all our tests start's executing */
 beforeAll(async () => {
   /** Setting environment variable for jwt */
@@ -38,10 +38,10 @@ beforeEach(async () => {
 
 /** Hook that runs after all our tests are complete */
 afterAll(async () => {
+  await mongoose.connection.close();
   if (mongo) {
     await mongo.stop();
   }
-  await mongoose.connection.close();
 });
 
 /** Fucntion for making auth requests : Start :*/
