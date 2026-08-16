@@ -87,8 +87,8 @@ it("returns a 201 with valid inputs", async () => {
     })
     .expect(201);
 
-  const paymentIntentOptions = (stripe.paymentIntents.create as jest.Mock).mock
-    .calls[0][0];
+  const paymentIntentOptions = await (stripe.paymentIntents.create as jest.Mock)
+    .mock.calls[0][0];
 
   expect(paymentIntentOptions.payment_method).toEqual("pm_card_visa");
   expect(paymentIntentOptions.amount).toEqual(order.price * 100);
@@ -109,9 +109,10 @@ it("returns a 201 with valid inputs", async () => {
    * expect(stripePaymentIntent!.currency).toEqual("inr")
    */
 
+  console.log(paymentIntentOptions, "paymentIntentOptions");
   const payment = await Payment.findOne({
     orderId: order._id.toString(),
-    stripeId: paymentIntentOptions!.id,
+    stripeId: "pi_test_123",
   });
 
   expect(payment).not.toBeNull();

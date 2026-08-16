@@ -53,10 +53,10 @@ beforeEach(async () => {
 
 /** Hook that runs after all our tests are complete */
 afterAll(async () => {
+  await mongoose.connection.close();
   if (mongo) {
     await mongo.stop();
   }
-  await mongoose.connection.close();
 });
 
 /** Fucntion for making auth requests : Start :*/
