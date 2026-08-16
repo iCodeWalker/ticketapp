@@ -35,6 +35,7 @@ import { app } from "./app";
 // app.use(errorHandler);
 
 const startApp = async () => {
+  console.log("Starting App...");
   if (!process.env.JWT_KEY) {
     throw new Error("JWT Not defined");
   }
